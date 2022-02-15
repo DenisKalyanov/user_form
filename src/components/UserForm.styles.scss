@@ -1,0 +1,25 @@
+@import '../styles/variable.scss';
+
+.user-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 300px;
+  min-height: 148px;
+  .user-form-forgot-password{
+    text-align: center;
+    cursor: pointer;
+    color: $lightBlue;
+    &:hover {
+      color: $blue;
+    }
+  }
+  .user-form-error-message{
+    position: absolute;
+    top: -25px;
+    left: 50px;
+    color: $error;
+  }
+}

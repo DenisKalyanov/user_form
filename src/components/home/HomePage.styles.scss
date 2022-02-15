@@ -1,0 +1,13 @@
+@import '../../styles/variable.scss';
+
+.home-page {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 600;
+  background-color: $lightPurple;
+  -webkit-box-shadow: -1px 0px 69px 54px rgba(255, 231, 252, 0.95);
+  -moz-box-shadow: -1px 0px 69px 54px rgba(255, 231, 252, 0.95);
+  box-shadow: -1px 0px 69px 54px rgba(255, 231, 252, 0.95);
+  margin: 10%;
+  padding: 10%;
+}

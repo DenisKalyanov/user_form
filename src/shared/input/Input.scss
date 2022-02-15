@@ -1,0 +1,15 @@
+@import '../../styles/variable.scss';
+
+.input{
+  padding: 4px;
+  border: 1px solid $lightBlue;
+  border-radius: 4px;
+}
+
+.error{
+  border: 1px solid $error;
+}
+
+.error-cp{
+  border: 1px solid $error;
+}

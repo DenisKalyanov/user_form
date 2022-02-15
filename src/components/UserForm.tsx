@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Button from '../shared/button/Button';
 import Input from '../shared/input/Input';
+import { FORGOT_PASSWORD, REGISTER, SIGN_IN } from '../constants';
+import { validatePassword } from '../utils/validatePassword';
+import { isEmpty } from '../utils/isEmpty';
+import { useDispatch } from 'react-redux';
+import { register, signIn } from '../store/actions/actions';
+
+import './UserForm.styles.scss';
 
 const UserForm: React.FC = (): JSX.Element => {
-  let location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [error, setError] = useState<boolean>(false);
+  const [errorConfirmPassword, setErrorConfirmPassword] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<{
     login: string;
@@ -16,24 +28,67 @@ const UserForm: React.FC = (): JSX.Element => {
   });
   const { login, password, confirmPassword } = formData;
 
-  useEffect(()=>{
+  useEffect(() => {
     setFormData({
       login: '',
       password: '',
       confirmPassword: '',
-    })
-  },[location.pathname])
+    });
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (location.pathname === '/login' && localStorage.Authorization) {
+      navigate('/home');
+    }
+  }, [location.pathname]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(false);
+  };
+
+  const submitForm = (e) => {
+    e.preventDefault(e);
+    if (location.pathname.includes('login')) {
+      if (
+        isEmpty(formData.login) &&
+        validatePassword(formData.password) &&
+        localStorage[formData.login] === formData.password
+      ) {
+        dispatch(signIn());
+        navigate('/home');
+      } else {
+        setError(true);
+      }
+    } else if (location.pathname.includes('register')) {
+      if (isEmpty(formData.login) && validatePassword(formData.password)) {
+        if (formData.password === formData.confirmPassword) {
+          dispatch(register(formData));
+          navigate('/home');
+        } else {
+          setErrorConfirmPassword(true);
+        }
+      } else {
+        setError(true);
+      }
+    }
   };
 
   return (
-    <>
-      <Input placeholder="Login" name="login" value={login} setValue={onChange} />
-      <Input placeholder="Password" name="password" value={password} setValue={onChange} />
-      { location.pathname === "/register" && <Input placeholder="Confirm password" name="confirmPassword" value={confirmPassword} setValue={onChange} />}
-    </>
+    <form className="user-form" onSubmit={submitForm}>
+      {error && <p className="user-form-error-message">Invalid username or password</p>}
+      {errorConfirmPassword && <p className="user-form-error-message">Password don't match</p>}
+      <Input isError={error} type="email" placeholder="Login (email)" name="login" value={login} setValue={onChange} />
+      <Input isError={error} isErrorConfirmPassword={errorConfirmPassword} placeholder="Password" name="password" value={password} setValue={onChange} />
+      {location.pathname.includes('register') ? (
+        <Input isError={error} isErrorConfirmPassword={errorConfirmPassword} placeholder="Confirm password" name="confirmPassword" value={confirmPassword} setValue={onChange} />
+      ) : (
+        <span className="user-form-forgot-password" onClick={() => navigate('/forgot_password', { replace: true })}>
+          {FORGOT_PASSWORD}
+        </span>
+      )}
+      <Button title={location.pathname.includes('login') ? SIGN_IN : REGISTER} />
+    </form>
   );
 };
 
