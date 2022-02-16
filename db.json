@@ -1,0 +1,15 @@
+{
+  "register": [
+    {
+      "title": "register"
+    }
+  ],
+  "sign-in": [
+    {
+      "title": "signIn"
+    }
+  ],
+  "sign-out": {
+    "title": "signOut"
+  }
+}

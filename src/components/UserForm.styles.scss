@@ -1,5 +1,14 @@
 @import '../styles/variable.scss';
 
+@mixin notificationMessage {
+  display: block;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -25px);
+}
+
 .user-form {
   position: relative;
   display: flex;
@@ -8,7 +17,7 @@
   margin: 0 auto;
   max-width: 300px;
   min-height: 148px;
-  .user-form-forgot-password{
+  .user-form-forgot-password {
     text-align: center;
     cursor: pointer;
     color: $lightBlue;
@@ -16,10 +25,12 @@
       color: $blue;
     }
   }
-  .user-form-error-message{
-    position: absolute;
-    top: -25px;
-    left: 50px;
+  .user-form-error-message {
+    @include notificationMessage;
     color: $error;
+  }
+  .user-form-success-message {
+    @include notificationMessage;
+    color: $success;
   }
 }

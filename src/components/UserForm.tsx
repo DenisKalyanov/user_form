@@ -6,6 +6,7 @@ import {
   ERROR_CONFIRM_PASSWORD,
   ERROR_FORM_DATA,
   FORGOT_PASSWORD,
+  inputsData,
   REGISTER,
   SIGN_IN,
 } from '../constants';
@@ -16,24 +17,7 @@ import { register, signIn } from '../store/actions/actions';
 
 import './UserForm.styles.scss';
 
-const inputs = {
-  login: {
-    emailPlaceholder: 'Login (email)',
-    emailName: 'login',
-    passwordPlaceholder: 'Password',
-    passwordName: 'password',
-    buttonTitle: SIGN_IN,
-  },
-  register: {
-    emailPlaceholder: 'Login (email)',
-    emailName: 'login',
-    passwordPlaceholder: 'Password',
-    passwordName: 'password',
-    passwordConfirmPlaceholder: 'Confirm password',
-    passwordConfirmName: 'confirmPassword',
-    buttonTitle: REGISTER,
-  },
-};
+
 
 const UserForm: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -74,7 +58,7 @@ const UserForm: React.FC = (): JSX.Element => {
     setErrorConfirmPassword(false);
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault(e);
     if (location.pathname.includes('login')) {
       if (
@@ -90,7 +74,7 @@ const UserForm: React.FC = (): JSX.Element => {
     } else if (location.pathname.includes('register')) {
       if (isEmpty(formData.login) && validatePassword(formData.password)) {
         if (formData.password === formData.confirmPassword) {
-          dispatch(register(formData));
+          await dispatch(register(formData));
           navigate('/home');
         } else {
           setErrorConfirmPassword(true);
@@ -110,7 +94,6 @@ const UserForm: React.FC = (): JSX.Element => {
     }
   };
 
-
   return (
     <form className="user-form" onSubmit={submitForm}>
       {errorMessage()}
@@ -118,8 +101,8 @@ const UserForm: React.FC = (): JSX.Element => {
         <Input
           isError={error}
           type="email"
-          placeholder={inputs[key].emailPlaceholder}
-          name={inputs[key].emailName}
+          placeholder={inputsData[key].emailPlaceholder}
+          name={inputsData[key].emailName}
           value={login}
           setValue={onChange}
         />
@@ -127,37 +110,17 @@ const UserForm: React.FC = (): JSX.Element => {
       <Input
         isError={error}
         isErrorConfirmPassword={errorConfirmPassword}
-        placeholder={inputs[key].passwordPlaceholder}
-        name={inputs[key].passwordName}
+        placeholder={inputsData[key].passwordPlaceholder}
+        name={inputsData[key].passwordName}
         value={password}
         setValue={onChange}
       />
-      {/* {location.pathname.includes('change_password') && (
-        <>
-          <Input
-            isError={error}
-            isErrorConfirmPassword={errorConfirmPassword}
-            placeholder={inputs[key].placeholderNewPassword}
-            name={inputs[key].passwordNewName}
-            value={password}
-            setValue={onChange}
-          />
-          <Input
-            isError={error}
-            isErrorConfirmPassword={errorConfirmPassword}
-            placeholder={inputs[key].placeholderConfirmNewPassword}
-            name={inputs[key].passwordConfirmNewName}
-            value={password}
-            setValue={onChange}
-          />
-        </>
-      )} */}
       {location.pathname.includes('register') ? (
         <Input
           isError={error}
           isErrorConfirmPassword={errorConfirmPassword}
-          placeholder={inputs[key].passwordConfirmPlaceholder}
-          name={inputs[key].passwordConfirmName}
+          placeholder={inputsData[key].passwordConfirmPlaceholder}
+          name={inputsData[key].passwordConfirmName}
           value={confirmPassword}
           setValue={onChange}
         />

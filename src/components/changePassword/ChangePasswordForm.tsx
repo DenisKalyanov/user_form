@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CHANGE_PASSWORD, ERROR_PASSWORD_DATA } from '../../constants';
+import { CHANGE_PASSWORD, ERROR_PASSWORD_DATA, PASSWORD_SUCCESS_CHANGED } from '../../constants';
 import Button from '../../shared/button/Button';
 import Input from '../../shared/input/Input';
 import { RootState } from '../../store/reducers/rootReducer';
 import { validatePassword } from '../../utils/validatePassword';
-import UserForm from '../UserForm';
 
 const ChangePasswordForm: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [error, setError] = useState<boolean>(false);
+  const [isSuccessChanged, setSuccessChanged] = useState<boolean>(false);
   const [errorConfirmPassword, setErrorConfirmPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<{
     passwordOld: string;
@@ -46,6 +46,10 @@ const ChangePasswordForm: React.FC = (): JSX.Element => {
       passwordNew === passwordNewConfirm
     ) {
       localStorage[currentUser] = passwordNew;
+      setSuccessChanged(true);
+      setTimeout(() => {
+        setSuccessChanged(false);
+      }, 2500);
     } else {
       setError(true);
     }
@@ -54,6 +58,9 @@ const ChangePasswordForm: React.FC = (): JSX.Element => {
   const errorMessage = () => {
     if (error) {
       return <p className="user-form-error-message">{ERROR_PASSWORD_DATA}</p>;
+    }
+    if (isSuccessChanged) {
+      return <p className="user-form-success-message">{PASSWORD_SUCCESS_CHANGED}</p>;
     }
   };
 
