@@ -1,6 +1,7 @@
 import { Dispatch } from 'react';
 import { REGISTER, SIGN_OUT, SIGN_IN, SET_CURRENT_USER } from '../types';
 
+const BASE_URL = 'http://localhost:3000/';
 export const register =
   (formData: any) =>
   async (
@@ -9,9 +10,8 @@ export const register =
       login?: string;
     }>,
   ) => {
-    await fetch('http://localhost:3000/register')
-      .then((response) => {
-        console.log(response)
+    await fetch(`${BASE_URL}register`)
+      .then(() => {
         dispatch({ type: REGISTER });
         localStorage.setItem(formData.login, formData.password);
         localStorage.setItem('Authorization', formData.login);
@@ -25,15 +25,27 @@ export const register =
 
 export const signIn =
   (login: string) =>
-  (dispatch: Dispatch<{ type: string; login?: string }>): void => {
-    dispatch({ type: SIGN_IN });
-    localStorage.setItem('Authorization', login);
-    dispatch({ type: SET_CURRENT_USER, login });
+  async (dispatch: Dispatch<{ type: string; login?: string }>): Promise<void> => {
+    await fetch(`${BASE_URL}sign-in`)
+      .then(() => {
+        dispatch({ type: SIGN_IN });
+        localStorage.setItem('Authorization', login);
+        dispatch({ type: SET_CURRENT_USER, login });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
 export const signOut =
   () =>
-  (dispatch: Dispatch<{ type: string }>): void => {
-    dispatch({ type: SIGN_OUT });
-    delete localStorage.Authorization;
+  async (dispatch: Dispatch<{ type: string }>): Promise<void> => {
+    await fetch(`${BASE_URL}sign-out`)
+      .then(() => {
+        dispatch({ type: SIGN_OUT });
+        delete localStorage.Authorization;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };

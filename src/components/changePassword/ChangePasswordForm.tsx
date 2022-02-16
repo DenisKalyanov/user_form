@@ -9,6 +9,10 @@ import { validatePassword } from '../../utils/validatePassword';
 
 const ChangePasswordForm: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
+
+  //=================================================
+  // State
+  //=================================================
   const [error, setError] = useState<boolean>(false);
   const [isSuccessChanged, setSuccessChanged] = useState<boolean>(false);
   const [errorConfirmPassword, setErrorConfirmPassword] = useState<boolean>(false);
@@ -23,14 +27,23 @@ const ChangePasswordForm: React.FC = (): JSX.Element => {
   });
   const { passwordOld, passwordNew, passwordNewConfirm } = formData;
 
+  //=================================================
+  // Selectors
+  //=================================================
   const { currentUser } = useSelector((state: RootState) => state.commonReducer);
 
+  //=================================================
+  // Check auth
+  //=================================================
   useEffect(() => {
     if (location.pathname === '/change_password' && !localStorage.Authorization) {
       navigate('/login');
     }
   }, [location.pathname]);
 
+  //=================================================
+  // Form handlers
+  //=================================================
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError(false);

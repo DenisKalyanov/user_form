@@ -8,7 +8,9 @@
 npm i
 
 ## to simulate requests to the server
-json-server --watch db.json
+npm run server
 
 ## run project
 npm run start
+
+### And open http://localhost:9000/

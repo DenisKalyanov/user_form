@@ -13,15 +13,23 @@ const Navigation: React.FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const setActiveStyle = (item: string) => location.pathname === item && 'nav-list-item__active';
-
+  //=================================================
+  // State
+  //=================================================
   const [navMenu, setNavMenu] = useState<TNavMenu[]>([
     { route: '/login', title: 'Login' },
     { route: '/register', title: 'Register' },
   ]);
+  const setActiveStyle = (item: string) => location.pathname === item && 'nav-list-item__active';
 
+  //=================================================
+  // Selectors
+  //=================================================
   const { isAuthorization } = useSelector((state: RootState) => state.commonReducer);
 
+  //=================================================
+  // Check auth
+  //=================================================
   useEffect(() => {
     if (isAuthorization) {
       setNavMenu([{ route: '/change_password', title: 'Change Password' }]);
@@ -33,9 +41,9 @@ const Navigation: React.FC = (): JSX.Element => {
     }
   }, [isAuthorization]);
 
-  const signOutHandler = () => {
-    dispatch(signOut());
-    navigate("/login");
+  const signOutHandler = async () => {
+    await dispatch(signOut());
+    navigate('/login');
   };
 
   return (

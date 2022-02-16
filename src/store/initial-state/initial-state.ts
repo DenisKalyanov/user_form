@@ -1,7 +1,7 @@
-export type TInitialState ={
+export type TInitialState = {
   isAuthorization: boolean;
   currentUser: string | null;
-}
+};
 
 const initialState: TInitialState = {
   isAuthorization: false,

@@ -38,7 +38,8 @@
   },
   "scripts": {
     "start": "webpack-cli serve",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "server": "json-server --watch db.json"
   },
   "repository": {
     "type": "git",
