@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './HomePage.styles.scss';
 
-const ResetPasswordForm: React.FC = (): JSX.Element => {
+const HomePage: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
 
@@ -17,4 +17,4 @@ const ResetPasswordForm: React.FC = (): JSX.Element => {
   )
 }
 
-export default ResetPasswordForm
+export default HomePage;

@@ -11,7 +11,7 @@ const App: React.FC = (): JSX.Element => {
   // Check authorization
   useEffect(() => {
     if (localStorage.Authorization) {
-      dispatch(signIn());
+      dispatch(signIn(localStorage.Authorization));
     }
   }, []);
 

@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../shared/button/Button';
 import Input from '../shared/input/Input';
-import { FORGOT_PASSWORD, REGISTER, SIGN_IN } from '../constants';
+import {
+  ERROR_CONFIRM_PASSWORD,
+  ERROR_FORM_DATA,
+  FORGOT_PASSWORD,
+  REGISTER,
+  SIGN_IN,
+} from '../constants';
 import { validatePassword } from '../utils/validatePassword';
 import { isEmpty } from '../utils/isEmpty';
 import { useDispatch } from 'react-redux';
@@ -10,12 +16,32 @@ import { register, signIn } from '../store/actions/actions';
 
 import './UserForm.styles.scss';
 
+const inputs = {
+  login: {
+    emailPlaceholder: 'Login (email)',
+    emailName: 'login',
+    passwordPlaceholder: 'Password',
+    passwordName: 'password',
+    buttonTitle: SIGN_IN,
+  },
+  register: {
+    emailPlaceholder: 'Login (email)',
+    emailName: 'login',
+    passwordPlaceholder: 'Password',
+    passwordName: 'password',
+    passwordConfirmPlaceholder: 'Confirm password',
+    passwordConfirmName: 'confirmPassword',
+    buttonTitle: REGISTER,
+  },
+};
+
 const UserForm: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [error, setError] = useState<boolean>(false);
   const [errorConfirmPassword, setErrorConfirmPassword] = useState<boolean>(false);
+  let key = location.pathname.replace(/^./, '');
 
   const [formData, setFormData] = useState<{
     login: string;
@@ -45,6 +71,7 @@ const UserForm: React.FC = (): JSX.Element => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError(false);
+    setErrorConfirmPassword(false);
   };
 
   const submitForm = (e) => {
@@ -55,7 +82,7 @@ const UserForm: React.FC = (): JSX.Element => {
         validatePassword(formData.password) &&
         localStorage[formData.login] === formData.password
       ) {
-        dispatch(signIn());
+        dispatch(signIn(formData.login));
         navigate('/home');
       } else {
         setError(true);
@@ -74,14 +101,66 @@ const UserForm: React.FC = (): JSX.Element => {
     }
   };
 
+  const errorMessage = () => {
+    if (error) {
+      return <p className="user-form-error-message">{ERROR_FORM_DATA}</p>;
+    }
+    if (errorConfirmPassword) {
+      return <p className="user-form-error-message">{ERROR_CONFIRM_PASSWORD}</p>;
+    }
+  };
+
+
   return (
     <form className="user-form" onSubmit={submitForm}>
-      {error && <p className="user-form-error-message">Invalid username or password</p>}
-      {errorConfirmPassword && <p className="user-form-error-message">Password don't match</p>}
-      <Input isError={error} type="email" placeholder="Login (email)" name="login" value={login} setValue={onChange} />
-      <Input isError={error} isErrorConfirmPassword={errorConfirmPassword} placeholder="Password" name="password" value={password} setValue={onChange} />
+      {errorMessage()}
+      {!location.pathname.includes('change_password') && (
+        <Input
+          isError={error}
+          type="email"
+          placeholder={inputs[key].emailPlaceholder}
+          name={inputs[key].emailName}
+          value={login}
+          setValue={onChange}
+        />
+      )}
+      <Input
+        isError={error}
+        isErrorConfirmPassword={errorConfirmPassword}
+        placeholder={inputs[key].passwordPlaceholder}
+        name={inputs[key].passwordName}
+        value={password}
+        setValue={onChange}
+      />
+      {/* {location.pathname.includes('change_password') && (
+        <>
+          <Input
+            isError={error}
+            isErrorConfirmPassword={errorConfirmPassword}
+            placeholder={inputs[key].placeholderNewPassword}
+            name={inputs[key].passwordNewName}
+            value={password}
+            setValue={onChange}
+          />
+          <Input
+            isError={error}
+            isErrorConfirmPassword={errorConfirmPassword}
+            placeholder={inputs[key].placeholderConfirmNewPassword}
+            name={inputs[key].passwordConfirmNewName}
+            value={password}
+            setValue={onChange}
+          />
+        </>
+      )} */}
       {location.pathname.includes('register') ? (
-        <Input isError={error} isErrorConfirmPassword={errorConfirmPassword} placeholder="Confirm password" name="confirmPassword" value={confirmPassword} setValue={onChange} />
+        <Input
+          isError={error}
+          isErrorConfirmPassword={errorConfirmPassword}
+          placeholder={inputs[key].passwordConfirmPlaceholder}
+          name={inputs[key].passwordConfirmName}
+          value={confirmPassword}
+          setValue={onChange}
+        />
       ) : (
         <span className="user-form-forgot-password" onClick={() => navigate('/forgot_password', { replace: true })}>
           {FORGOT_PASSWORD}
