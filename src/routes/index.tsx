@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import ErrorPage from '../components/error/ErrorPage';
-import ForgotPassword from '../components/forgotPassword/forgotPassword';
+import ForgotPassword from '../components/forgotPassword/ForgotPassword';
 import HomePage from '../components/home/HomePage';
 import ChangePasswordForm from '../components/changePassword/ChangePasswordForm';
 import UserForm from '../components/userForm/UserForm';
