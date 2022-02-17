@@ -1,5 +1,5 @@
-import initialState, { TInitialState } from '../initial-state/initial-state';
-import { REGISTER, SIGN_IN, SIGN_OUT, SET_CURRENT_USER } from '../types';
+import initialState, { TInitialState } from '../initialState/initialState';
+import { REGISTER, SIGN_IN, SIGN_OUT, SET_CURRENT_USER } from '../actions/actionTypes';
 
 type ActionType =
   | { type: 'REGISTER' }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../shared/button/Button';
-import Input from '../shared/input/Input';
-import { ERROR_CONFIRM_PASSWORD, ERROR_FORM_DATA, FORGOT_PASSWORD, inputsData, REGISTER, SIGN_IN } from '../constants';
-import { validatePassword } from '../utils/validatePassword';
-import { isEmpty } from '../utils/isEmpty';
+import Button from '../../shared/button/Button';
+import Input from '../../shared/input/Input';
+import { ERROR_CONFIRM_PASSWORD, ERROR_FORM_DATA, FORGOT_PASSWORD, INPUTS_DATA, REGISTER, SIGN_IN } from '../../constants';
+import { validatePassword } from '../../utils/validatePassword';
+import { isEmpty } from '../../utils/isEmpty';
 import { useDispatch } from 'react-redux';
-import { register, signIn } from '../store/actions/actions';
+import { register, signIn } from '../../store/actions/actions';
 
 import './UserForm.styles.scss';
 
@@ -97,8 +97,8 @@ const UserForm: React.FC = (): JSX.Element => {
         <Input
           isError={error}
           type="email"
-          placeholder={inputsData[key].emailPlaceholder}
-          name={inputsData[key].emailName}
+          placeholder={INPUTS_DATA[key].emailPlaceholder}
+          name={INPUTS_DATA[key].emailName}
           value={login}
           setValue={onChange}
         />
@@ -106,8 +106,8 @@ const UserForm: React.FC = (): JSX.Element => {
       <Input
         isError={error}
         isErrorConfirmPassword={errorConfirmPassword}
-        placeholder={inputsData[key].passwordPlaceholder}
-        name={inputsData[key].passwordName}
+        placeholder={INPUTS_DATA[key].passwordPlaceholder}
+        name={INPUTS_DATA[key].passwordName}
         value={password}
         setValue={onChange}
       />
@@ -115,8 +115,8 @@ const UserForm: React.FC = (): JSX.Element => {
         <Input
           isError={error}
           isErrorConfirmPassword={errorConfirmPassword}
-          placeholder={inputsData[key].passwordConfirmPlaceholder}
-          name={inputsData[key].passwordConfirmName}
+          placeholder={INPUTS_DATA[key].passwordConfirmPlaceholder}
+          name={INPUTS_DATA[key].passwordConfirmName}
           value={confirmPassword}
           setValue={onChange}
         />

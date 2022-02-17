@@ -9,7 +9,7 @@ export const ERROR_CONFIRM_PASSWORD = "Password don't match";
 export const ERROR_PASSWORD_DATA = 'Password do not exist!';
 export const PASSWORD_SUCCESS_CHANGED = 'Password success changed';
 
-export const inputsData = {
+export const INPUTS_DATA = {
   login: {
     emailPlaceholder: 'Login (email)',
     emailName: 'login',

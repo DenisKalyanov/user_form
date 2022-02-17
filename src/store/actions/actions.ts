@@ -1,5 +1,5 @@
 import { Dispatch } from 'react';
-import { REGISTER, SIGN_OUT, SIGN_IN, SET_CURRENT_USER } from '../types';
+import { REGISTER, SIGN_OUT, SIGN_IN, SET_CURRENT_USER } from './actionTypes';
 
 const BASE_URL = 'http://localhost:3000/';
 export const register =
